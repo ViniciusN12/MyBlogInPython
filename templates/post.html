@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+        <article class="bg-white p-8 rounded-lg shadow-md mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ post.title }}</h2>
+            <p class="text-sm text-gray-500 mb-4">Posted on {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <p class="text-gray-700 leading-relaxed">{{ post.content }}</p>
+        </article>
+        <section class="bg-white p-6 rounded-lg shadow-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-800">Comments</h3>
+                <a href="/post/{{ post.id }}/add_comment" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">+ Add Comment</a>
+            </div>
+            
+            {% if post.comments %}
+                <div class="space-y-4">
+                {% for comment in post.comments %}
+                    <div class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-50 rounded-r">
+                        <p class="text-sm text-gray-500">By {{ comment.author.username if comment.author else 'Anonymous' }}</p>
+                        <p class="text-gray-700 mt-1">{{ comment.content }}</p>
+                        <p class="text-xs text-gray-400 mt-2">{{ comment.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500 text-center py-4">No comments yet.</p>
+            {% endif %}
+        </section>
+
+        <a href="/" class="inline-block mt-6 text-blue-500 hover:text-blue-700">← Return to Home</a>
+{% endblock %}
